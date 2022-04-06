@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import SummaryForm from "../SummaryForm";
 
-test("checkbox is unchecked by defailt and button is enabled by default", () => {
+// must agree to terms and conditions to continue with confirming order
+test("checkbox is unchecked by default and button is disabled by default", () => {
   render(<SummaryForm />);
 
   const termsCheckbox = screen.getByRole("checkbox", { name: "I agree to Terms and Conditions" });
@@ -11,5 +12,7 @@ test("checkbox is unchecked by defailt and button is enabled by default", () => 
   expect(termsCheckbox).not.toBeChecked();
 
   // expect button to be enabled
-  expect(confirmButton).toBeEnabled();
+  expect(confirmButton).toBeDisabled();
 });
+
+
