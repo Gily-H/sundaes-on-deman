@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import Options from "../Options";
 import ScoopOption from "../ScoopOption";
+import ToppingOption from "../ToppingOption";
 
 test("displays image for each scoop option from the server", async () => {
   render(<Options optionType="scoops" />);
 
-  // find images - getAllByRole collects all images
-  // find images by name where name is the alt text
-  // regex /scoop$/ == scoop is at the end of the expression
-  const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i });
+  // retrieving scoop images involves requesting data from a server
+  // tests will complete before mock request finishes and therefore tests will fail - requires async
+  const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i }); // name is alt attr
   expect(scoopImages).toHaveLength(2); // 2 from custom handler
 
   // confirm all text of images
@@ -17,4 +17,16 @@ test("displays image for each scoop option from the server", async () => {
   // primitives can use .toBe
   // arrays and objects need to use .toEqual
   expect(altText).toEqual(["Chocolate scoop", "Vanilla scoop"]);
+});
+
+test("display image for each topping option from the server", async () => {
+  render(<Options optionType="toppings" />);
+
+  // retrieve topping images from the server through async test call
+  const toppingImages = await screen.findAllByRole("img", { name: /topping$/i });
+  expect(toppingImages).toHaveLength(3);
+
+  // confirm images retrieved with correct alt text
+  const altText = toppingImages.map((element) => element.alt);
+  expect(altText).toEqual(["Cherries topping", "M&Ms topping", "Hot fudge topping"]);
 });
