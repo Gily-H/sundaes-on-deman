@@ -9,7 +9,7 @@ test("displays image for each scoop option from the server", async () => {
   // retrieving scoop images involves requesting data from a server
   // tests will complete before mock request finishes and therefore tests will fail - requires async
   const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i }); // name is alt attr
-  expect(scoopImages).toHaveLength(2); // 2 from custom handler
+  expect(scoopImages).toHaveLength(2); // 2 items hardcoded in custom handler
 
   // confirm all text of images
   const altText = scoopImages.map((element) => element.alt);
