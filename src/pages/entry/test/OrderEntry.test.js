@@ -16,6 +16,9 @@ test("handles error for scoops and topping routes", async () => {
 
   render(<OrderEntry />);
 
+  // multiple server requests will not resolve simultaneously
+  // without waitFor, function will return only the very first server response
+  // asynchronous waitFor does not return until all server requests have completed
   await waitFor(async () => {
     // requests are still asynchronous even though they will send an error
     const errorAlerts = await screen.findAllByRole("alert", {
