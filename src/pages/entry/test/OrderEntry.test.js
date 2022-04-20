@@ -1,7 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import OrderEntry from "../OrderEntry.js";
 import { rest } from "msw";
+
+import { render, screen, waitFor } from "../../../test-utils/testing-library-utils";
 import { server } from "../../../mocks/server";
+import OrderEntry from "../OrderEntry.js";
 
 test("handles error for scoops and topping routes", async () => {
   // mock request failures that result in a status error 500

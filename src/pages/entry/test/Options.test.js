@@ -1,7 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../test-utils/testing-library-utils";
 import Options from "../Options";
-import ScoopOption from "../ScoopOption";
-import ToppingOption from "../ToppingOption";
 
 test("displays image for each scoop option from the server", async () => {
   render(<Options optionType="scoops" />);
