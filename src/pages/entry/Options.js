@@ -11,6 +11,7 @@ import { useOrderDetails } from "../../contexts/orderDetails";
 export default function Options({ optionType }) {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(false);
+  // context: [order object {optionCounts and subtotals}, setter for option counts in order object]
   const [orderDetails, updateItemCount] = useOrderDetails();
 
   useEffect(() => {
@@ -24,9 +25,11 @@ export default function Options({ optionType }) {
     return <AlertBanner />;
   }
 
+  // component to display depending on option type passed in as a prop
   const ItemComponent = optionType === "scoops" ? ScoopOption : ToppingOption;
   const title = optionType[0].toUpperCase() + optionType.slice(1).toLowerCase();
 
+  // map each option retrieved from server into separate Item components
   const optionItems = items.map((item) => (
     <ItemComponent
       key={item.name}
@@ -43,7 +46,7 @@ export default function Options({ optionType }) {
       <h2>{title}</h2>
       <p>${pricePerItem[optionType]} each</p>
       <p>
-        {title} total: {orderDetails.totals[optionType]}
+        {title} total: ${orderDetails.totals[optionType]}
       </p>
       <Row>{optionItems}</Row>;
     </>
