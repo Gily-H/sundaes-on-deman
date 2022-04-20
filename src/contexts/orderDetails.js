@@ -1,6 +1,15 @@
 import { createContext, useContext, useState, useMemo, useEffect } from "react";
 import { pricePerItem } from "../constants";
 
+// format number as currency
+function formatCurrency(amount) {
+  return new Intl.NumberFormat("en-US",{
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(amount);
+}
+
 // intentionally left out default value for createContext
 // want to check if null when not inside a Provider
 const OrderDetails = createContext();
@@ -33,11 +42,12 @@ function OrderDetailsProvider(props) {
     scoops: new Map(), // key = specific option name (e.g vanilla), value = count for key option
     toppings: new Map(), // key = specific option name (e.g M&Ms), value = count for key option
   });
+  const zeroCurrency = formatCurrency(0);
   const [totals, setTotals] = useState({
     // subtotals and grand total
-    scoops: 0,
-    toppings: 0,
-    grandTotal: 0,
+    scoops: zeroCurrency,
+    toppings: zeroCurrency,
+    grandTotal: zeroCurrency,
   });
 
   // update subtotals and grand totals when selected option counts are changed by user
@@ -46,9 +56,9 @@ function OrderDetailsProvider(props) {
     const toppingsSubtotal = calculateSubtotal("toppings", optionCounts);
     const grandTotal = scoopsSubtotal + toppingsSubtotal;
     setTotals({
-      scoops: scoopsSubtotal,
-      toppings: toppingsSubtotal,
-      grandTotal, // shortcut will use variable name as the key
+      scoops: formatCurrency(scoopsSubtotal),
+      toppings: formatCurrency(toppingsSubtotal),
+      grandTotal: formatCurrency(grandTotal),
     });
   }, [optionCounts]);
 
@@ -63,7 +73,7 @@ function OrderDetailsProvider(props) {
         // create new Map to avoid same reference issues for corresponding option type Map
         // changes in the new Map will not mutate values in the previous state's Map
         const newOptionsCountMap = new Map(prevOptionCounts[optionType]);
-        // update option count with the new item count for specific item in the new Map 
+        // update option count with the new item count for specific item in the new Map
         newOptionsCountMap.set(itemName, parseInt(newItemCount)); // count is type string - convert to int
         // new count object with previous counts, replace the optionType Map with the newly updated option count Map
         const newOptionsCount = {
