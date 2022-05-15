@@ -16,7 +16,7 @@ test("checkbox is unchecked by default and button is disabled by default", () =>
   expect(confirmButton).toBeDisabled();
 });
 
-test("enable button on first checkbox click and disable button on second checkbox click", async () => {
+test("enable button on first checkbox click and disable button on second checkbox click", () => {
   render(<SummaryForm />);
 
   const termsCheckbox = screen.getByRole("checkbox", { name: "I agree to Terms and Conditions" });
