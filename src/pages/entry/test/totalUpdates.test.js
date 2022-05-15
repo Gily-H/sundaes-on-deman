@@ -5,6 +5,7 @@ import Options from "../Options";
 
 test("update scoop subtotal when scoops selected", async () => {
   // to use Context inside test, need to wrap component with Provider
+  // user our own implementation of the render function that has a ContextProvider wrapper
   render(<Options optionType="scoops" />);
 
   // initial subtotal should start at $0.00
@@ -23,5 +24,5 @@ test("update scoop subtotal when scoops selected", async () => {
   const chocolateInput = await screen.findByRole("spinbutton", { name: "Chocolate" });
   userEvent.clear(chocolateInput);
   userEvent.type(chocolateInput, "2");
-  expect(scoopsSubtotal).toHaveTextContent("6.00");
+  expect(scoopsSubtotal).toHaveTextContent("6.00"); // 1 vanilla + 2 chocolate (each $2)
 });

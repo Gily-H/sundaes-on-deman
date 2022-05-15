@@ -9,7 +9,7 @@ test("displays image for each scoop option from the server", async () => {
   const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i }); // name is alt attr
   expect(scoopImages).toHaveLength(2); // 2 items hardcoded in custom handler
 
-  // confirm all text of images
+  // confirm alt text of images
   const altText = scoopImages.map((element) => element.alt);
 
   // primitives can use .toBe
