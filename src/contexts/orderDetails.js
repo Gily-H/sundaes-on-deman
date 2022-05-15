@@ -83,10 +83,13 @@ function OrderDetailsProvider(props) {
         return newOptionsCount; // set the state with the new option count object
       });
     }
+    
+    // values to be used in OrderDetails Context
+    // spread the optionCounts to prevent nesting of objects
     return [{ ...optionCounts, totals }, updateItemCount];
   }, [optionCounts, totals]); // memo dependencies - recalculate value when dependencies change
 
-  // value to be used by consumer components nested in the Provider
+  // value attribute is provided to nested components that subscribe using OrderDetails Context
   return <OrderDetails.Provider value={value} {...props} />;
 }
 
