@@ -26,3 +26,43 @@ test("update scoop subtotal when scoops selected", async () => {
   userEvent.type(chocolateInput, "2");
   expect(scoopsSubtotal).toHaveTextContent("6.00"); // 1 vanilla + 2 chocolate (each $2)
 });
+
+test("Update toppings subtotal when toppings selected", async () => {
+  render(<Options optionType="toppings" />);
+
+  // initial toppings subtotal should start at $0.00
+  // search toppings subtotal component by text -> does not have a role
+  const toppingsSubtotal = screen.getByText("Toppings total: $", { exact: false });
+  expect(toppingsSubtotal).toHaveTextContent("0.00"); // initial amount
+
+  // select the Cherries topping by clicking on the Cherries checkbox
+  // checkbox appears if there is a successful request to the mock server to retrieve the toppings
+  // need to await the server response
+  const cherriesCheckbox = await screen.findByRole("checkbox", { name: "Cherries" });
+
+  // user event to click on the Cherries checkbox - should be checked
+  userEvent.click(cherriesCheckbox);
+  expect(cherriesCheckbox).toBeChecked();
+
+  // toppings subtotal should equal $1.50 after checking the Cherries topping
+  expect(toppingsSubtotal).toHaveTextContent("1.50");
+
+  // Check another topping - M&Ms topping
+  // checkbox appears if there is a successful request to the mock server to retrieve the toppings
+  // need to await the server response
+  const mAndMsCheckbox = await screen.findByRole("checkbox", { name: "M&Ms" });
+
+  // user event to click on M&Ms checkbox - should be checked
+  userEvent.click(mAndMsCheckbox);
+  expect(mAndMsCheckbox).toBeChecked();
+
+  // toppings subtotal should equal $3.00 after checking the M&Ms topping
+  expect(toppingsSubtotal).toHaveTextContent("3.00");
+
+  // uncheck the Cherries topping
+  userEvent.click(cherriesCheckbox);
+  expect(cherriesCheckbox).not.toBeChecked();
+
+  // toppings subtotal should equal $1.50 after unchecking the Cherries topping
+  expect(toppingsSubtotal).toHaveTextContent("1.50");
+});

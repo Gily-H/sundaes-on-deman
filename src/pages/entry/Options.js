@@ -51,7 +51,7 @@ export default function Options({ optionType }) {
       <p>
         {title} total: {orderDetails.totals[optionType]}
       </p>
-      <Row>{optionItems}</Row>;
+      <Row>{optionItems}</Row>
     </>
   );
 }
