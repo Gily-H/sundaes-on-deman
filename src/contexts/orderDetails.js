@@ -1,14 +1,6 @@
 import { createContext, useContext, useState, useMemo, useEffect } from "react";
 import { pricePerItem } from "../constants";
-
-// format number as currency
-function formatCurrency(amount) {
-  return new Intl.NumberFormat("en-US",{
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  }).format(amount);
-}
+import { formatCurrency } from "../utilities";
 
 // intentionally left out default value for createContext
 // want to check if null when not inside a Provider
@@ -83,7 +75,7 @@ function OrderDetailsProvider(props) {
         return newOptionsCount; // set the state with the new option count object
       });
     }
-    
+
     // values to be used in OrderDetails Context
     // spread the optionCounts to prevent nesting of objects
     return [{ ...optionCounts, totals }, updateItemCount];

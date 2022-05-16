@@ -11,6 +11,7 @@ function App() {
         <OrderEntry />
       </OrderDetailsProvider>
       {/* Confirmation page does not need a provider */}
+      <SummaryForm/>
     </Container>
   );
 }
