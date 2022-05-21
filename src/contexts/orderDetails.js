@@ -76,9 +76,17 @@ function OrderDetailsProvider(props) {
       });
     }
 
+    // clears the current options selected in the order
+    function resetOrder() {
+      setOptionCounts({
+        scoops: new Map(),
+        toppings: new Map(),
+      });
+    }
+
     // values to be used in OrderDetails Context
     // spread the optionCounts to prevent nesting of objects
-    return [{ ...optionCounts, totals }, updateItemCount];
+    return [{ ...optionCounts, totals }, updateItemCount, resetOrder];
   }, [optionCounts, totals]); // memo dependencies - recalculate value when dependencies change
 
   // value attribute is provided to nested components that subscribe using OrderDetails Context
