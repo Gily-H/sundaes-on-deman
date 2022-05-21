@@ -1,7 +1,7 @@
 import SummaryForm from "../summary/SummaryForm.js";
 import { useOrderDetails } from "../../contexts/orderDetails.js";
 
-export default function OrderSummary() {
+export default function OrderSummary({ orderPhaseHandler }) {
   const [orderDetails] = useOrderDetails();
 
   // get a list of scoops
@@ -9,7 +9,11 @@ export default function OrderSummary() {
   // key = option name, value = option count
   const scoopsArray = Array.from(orderDetails.scoops.entries());
   const scoopsList = scoopsArray.map(([key, value]) => {
-    return <li key={key}>{`${value} ${key}`}</li>;
+    return (
+      <li key={key}>
+        {value} {key}
+      </li>
+    );
   });
 
   // get a list of toppings
@@ -19,7 +23,7 @@ export default function OrderSummary() {
 
   // display topping summary IFF at least one topping is selected
   if (toppingsArray.length) {
-    const toppingsList = toppingsArray.map((key) => <li key={key}>{`${key}`}</li>);
+    const toppingsList = toppingsArray.map((key) => <li key={key}>{key}</li>);
     toppingsDisplay = (
       <>
         <h2>Toppings: {orderDetails.totals.toppings}</h2>
@@ -35,7 +39,7 @@ export default function OrderSummary() {
       <ul>{scoopsList}</ul>
       {toppingsDisplay}
       <h2>Total {orderDetails.totals.grandTotal}</h2>
-      <SummaryForm />
+      <SummaryForm orderPhaseHandler={orderPhaseHandler} />
     </div>
   );
 }
