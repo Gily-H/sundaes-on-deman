@@ -1,6 +1,6 @@
 import userEvent from "@testing-library/user-event";
 
-import { render, screen, waitFor } from "../../../test-utils/testing-library-utils";
+import { render, screen } from "../../../test-utils/testing-library-utils";
 import Options from "../Options";
 import OrderEntry from "../OrderEntry";
 
@@ -89,11 +89,11 @@ describe("grand total", () => {
 
     // wait for server response with scoops options
     const vanillaInput = await screen.findByRole("spinbutton", { name: "Vanilla" });
-    
+
     // Increment the vanilla scoop by 1
     userEvent.clear(vanillaInput); // best to clear input to avoid errors
     userEvent.type(vanillaInput, "1");
-    
+
     // grand total should equal $2.00 after adding 1 to Vanilla scoop
     expect(grandTotal).toHaveTextContent("2.00");
 
@@ -107,7 +107,7 @@ describe("grand total", () => {
     // grand total should equal $3.50 after selecting cherries topping
     expect(grandTotal).toHaveTextContent("3.50");
   });
-  
+
   test("grand total updates properly if selecting topping option first", async () => {
     render(<OrderEntry />);
 
