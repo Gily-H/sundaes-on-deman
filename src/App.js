@@ -1,7 +1,8 @@
+import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import OrderEntry from "./pages/entry/OrderEntry";
-import { OrderDetailsProvider, useOrderDetails } from "./contexts/orderDetails";
-import SummaryForm from "./pages/summary/SummaryForm";
+import OrderSummary from "./pages/summary/OrderSummary";
+import { OrderDetailsProvider } from "./contexts/orderDetails";
 
 function App() {
   return (
@@ -9,9 +10,9 @@ function App() {
       <OrderDetailsProvider>
         {/* Summary Page and Entry page both need a provider */}
         <OrderEntry />
+        <OrderSummary />
       </OrderDetailsProvider>
       {/* Confirmation page does not need a provider */}
-      <SummaryForm/>
     </Container>
   );
 }
