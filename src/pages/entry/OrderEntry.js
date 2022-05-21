@@ -8,6 +8,7 @@ export default function OrderEntry() {
       <Options optionType="scoops" />
       <Options optionType="toppings" />
       <h2>Grand Total: {orderDetails.totals.grandTotal}</h2>
+      <button>Order Sundae!</button>
     </div>
   );
 }
