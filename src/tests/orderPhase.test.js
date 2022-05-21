@@ -13,6 +13,12 @@ test("order phases for happy path", async () => {
   const vanillaInput = await screen.findByRole("spinbutton", { name: "Vanilla" });
   userEvent.clear(vanillaInput);
   userEvent.type(vanillaInput, "1");
+  
+  // await keyword not necessary if we know that the Vanilla input exists
+  const chocolateInput = screen.getByRole("spinbutton", {name: "Chocolate"});
+  userEvent.clear(chocolateInput);
+  userEvent.type(chocolateInput, "2");
+  
 
   const cherriesCheckbox = await screen.findByRole("checkbox", { name: "Cherries" });
   userEvent.click(cherriesCheckbox);
@@ -23,13 +29,13 @@ test("order phases for happy path", async () => {
 
   // check order summary information based on order
   const scoopsSummary = screen.getByText("Scoops: $", { exact: false });
-  expect(scoopsSummary).toHaveTextContent("2.00");
+  expect(scoopsSummary).toHaveTextContent("6.00");
 
   const toppingsSummary = screen.getByText("Toppings: $", { exact: false });
   expect(toppingsSummary).toHaveTextContent("1.50");
 
   const totalSummary = screen.getByText("Total $", { exact: false });
-  expect(totalSummary).toHaveTextContent("3.50");
+  expect(totalSummary).toHaveTextContent("7.50");
 
   // accept terms and conditions and click button to confirm order
   // should transition to Confirmation page
@@ -42,7 +48,8 @@ test("order phases for happy path", async () => {
   userEvent.click(confirmOrderButton);
 
   // confirm order number on confirmation page
-  const orderNumber = screen.getByText("Your order number is", { exact: false });
+  // async call using axios - wait for response after sending POST request
+  const orderNumber = await screen.findByText("Your order number is ", { exact: false });
   expect(orderNumber).toHaveTextContent("123456789"); // number from mock handler
 
   // click the Create New Order button on the confirmation page
