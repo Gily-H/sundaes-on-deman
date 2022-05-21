@@ -16,7 +16,9 @@ test("handles error for scoops and topping routes", async () => {
     })
   );
 
-  render(<OrderEntry />);
+  // pass in mock function to satisfy Component props even if not used in test
+  // jest.fn() is a mock function that does nothing
+  render(<OrderEntry orderPhaseHandler={jest.fn()} />);
 
   // multiple server requests will not resolve simultaneously
   // without waitFor, function will return only the very first server response
