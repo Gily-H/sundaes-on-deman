@@ -13,16 +13,16 @@ function App() {
     setOrderPhase(phase);
   }
 
-  let Item = OrderEntry;
+  let PageComponent = OrderEntry;
   switch (orderPhase) {
     case "in progress":
-      Item = OrderEntry;
+      PageComponent = OrderEntry;
       break;
     case "review":
-      Item = OrderSummary;
+      PageComponent = OrderSummary;
       break;
     case "completed":
-      Item = OrderConfirmation;
+      PageComponent = OrderConfirmation;
       break;
     default:
       break;
@@ -31,7 +31,7 @@ function App() {
   return (
     <Container>
       <OrderDetailsProvider>
-        <Item orderPhaseHandler={transitionOrderPhase} />
+        <PageComponent orderPhaseHandler={transitionOrderPhase} />
       </OrderDetailsProvider>
     </Container>
   );
