@@ -21,12 +21,18 @@ export default function OrderConfirmation({ orderPhaseHandler }) {
 
   return (
     <div>
-      <h2>Thank you!</h2>
-      <p>Your order number is {orderNumber}</p>
-      <p>
-        <small>as per our terms and conditions, nothing will happen now</small>
-      </p>
-      <button onClick={handleClick}>Create new order</button>
+      {orderNumber ? (
+        <>
+          <h2>Thank you!</h2>
+          <p>Your order number is {orderNumber}</p>
+          <p>
+            <small>as per our terms and conditions, nothing will happen now</small>
+          </p>
+          <button onClick={handleClick}>Create new order</button>
+        </>
+      ) : (
+        <p>Loading</p>
+      )}
     </div>
   );
 }
