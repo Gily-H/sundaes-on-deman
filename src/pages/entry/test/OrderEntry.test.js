@@ -1,6 +1,7 @@
 import { rest } from "msw";
 
 import { render, screen, waitFor } from "../../../test-utils/testing-library-utils";
+import userEvent from "@testing-library/user-event";
 import { server } from "../../../mocks/server";
 import OrderEntry from "../OrderEntry.js";
 
@@ -34,4 +35,27 @@ test("handles error for scoops and topping routes", async () => {
     // should have an array of 2 alerts
     expect(errorAlerts).toHaveLength(2); // one for scoops and one for toppings
   });
+});
+
+test("order button disabled if no scoop option selected", async () => {
+  render(<OrderEntry orderPhaseHandler={jest.fn()} />);
+
+  // check if order button is disabled
+  const orderButton = screen.getByRole("button", { name: /order sundae!/i });
+  expect(orderButton).toBeDisabled();
+
+  // add a scoop to the order
+  const vanillaInput = await screen.findByRole("spinbutton", { name: "Vanilla" });
+  userEvent.clear(vanillaInput);
+  userEvent.type(vanillaInput, "1");
+
+  // check if order button is enabled
+  expect(orderButton).toBeEnabled();
+
+  // remove selected scoop
+  userEvent.clear(vanillaInput);
+  userEvent.type(vanillaInput, "0");
+
+  // check if order button is disabled
+  expect(orderButton).toBeDisabled();
 });
