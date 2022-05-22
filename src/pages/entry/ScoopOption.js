@@ -9,17 +9,19 @@ export default function ScoopOption({ name, imagePath, updateItemCount }) {
   // handler for clicking on input spinner for scoops
   const handleChange = (event) => {
     const currentvalue = event.target.value;
-    updateItemCount(name, currentvalue);
 
     // convert to number (potentially decimal)
     const currentValueFloat = parseFloat(currentvalue);
-
     // check for valid input
-    setIsValid(
+    const validValue =
       0 <= currentValueFloat && // check if negative
-        currentValueFloat <= 10 && // check if too high
-        Math.floor(currentValueFloat) === currentValueFloat // check if decimal
-    );
+      currentValueFloat <= 10 && // check if too high
+      Math.floor(currentValueFloat) === currentValueFloat; // check if decimal
+
+    setIsValid(validValue);
+
+    // only update option count if input is valid
+    validValue ? updateItemCount(name, currentvalue) : updateItemCount(name, "0");
   };
 
   return (
