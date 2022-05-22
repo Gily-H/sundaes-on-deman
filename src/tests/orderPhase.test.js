@@ -55,8 +55,8 @@ test("order phases for happy path", async () => {
   userEvent.click(confirmOrderButton);
 
   // initially there will be a loading screen when waiting for axios call to resolve
-  const loadingScreen = screen.getByText(/loading/i);
-  expect(loadingScreen).toBeInTheDocument();
+  const loading = screen.getByText(/loading/i);
+  expect(loading).toBeInTheDocument();
 
   // async call using axios - wait for response after sending POST request when confirming order
   // check the order confirmation page information
@@ -68,8 +68,8 @@ test("order phases for happy path", async () => {
   expect(orderNumber).toHaveTextContent("123456789"); // number from mock handler
 
   // loading screen should not be visible after we get the thank you screen
-  const noLoadingScreen = screen.queryByText(/loading/i);
-  expect(noLoadingScreen).not.toBeInTheDocument();
+  const notLoading = screen.queryByText(/loading/i);
+  expect(notLoading).not.toBeInTheDocument();
 
   // click the Create New Order button on the confirmation page
   const newOrderButton = screen.getByRole("button", { name: /create new order/i });
@@ -81,4 +81,25 @@ test("order phases for happy path", async () => {
 
   const toppingsSubtotal = screen.getByText("Toppings total: $", { exact: false });
   expect(toppingsSubtotal).toHaveTextContent("0.00");
+});
+
+test("Toppings header is not on summary page if no toppings ordered", async () => {
+  render(<App />);
+
+  // add a scoop to the order - async - wait for axios get request to retrieve options
+  const vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"});
+  userEvent.clear(vanillaInput);
+  userEvent.type(vanillaInput, "1");
+
+  // click on the Order Sundae button - move to summary phase
+  const orderButton = screen.getByRole("button", {name: /order sundae!/i});
+  userEvent.click(orderButton);
+
+  // check if the summary page returned a response
+  const scoopsHeading = screen.getByRole("heading", {name: /scoops/i});
+  expect(scoopsHeading).toBeInTheDocument();
+
+  // check if toppings heading is present on the summary apge
+  const toppingsHeading = screen.queryByRole("heading", {name: /toppings/i})
+  expect(toppingsHeading).not.toBeInTheDocument();
 });
