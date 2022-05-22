@@ -1,17 +1,25 @@
+import React, { useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
 export default function ScoopOption({ name, imagePath, updateItemCount }) {
+  const [isValid, setIsValid] = useState(true);
+
   // handler for clicking on input spinner for scoops
   const handleChange = (event) => {
-    const itemCount = parseInt(event.target.value);
-    // if NaN or negative value prevent update of subtotal
-    if (!itemCount || itemCount < 0) {
-      updateItemCount(name, "0");
-    } else {
-      updateItemCount(name, event.target.value);
-    }
+    const currentvalue = event.target.value;
+    updateItemCount(name, currentvalue);
+
+    // convert to number (potentially decimal)
+    const currentValueFloat = parseFloat(currentvalue);
+
+    // check for valid input
+    setIsValid(
+      0 <= currentValueFloat && // check if negative
+        currentValueFloat <= 10 && // check if too high
+        Math.floor(currentValueFloat) === currentValueFloat // check if decimal
+    );
   };
 
   return (
@@ -26,7 +34,12 @@ export default function ScoopOption({ name, imagePath, updateItemCount }) {
           {name}
         </Form.Label>
         <Col xs="5" style={{ textAlign: "left" }}>
-          <Form.Control type="number" min={0} defaultValue={0} onChange={handleChange} />
+          <Form.Control
+            type="number"
+            defaultValue={0}
+            onChange={handleChange}
+            isInvalid={!isValid}
+          />
         </Col>
       </Form.Group>
     </Col>
